@@ -80,7 +80,7 @@
 
   <section id="model" class="model">
     <h2>A → A′ 原貌再現</h2>
-    <p>透過 3D 建模技術，我們重現布袋戲偶（如史艷文）的細緻服飾與表情動作。</p>
+    <p>透過 3D 建模技術，我們重現布袋戲偶的細緻服飾與表情動作。</p>
     <div id="viewer"></div>
   </section>
 
@@ -137,27 +137,11 @@
       audio.play();
     }
 
-    // Three.js 3D展示
+    // Three.js 模型展示
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, viewer.clientWidth / viewer.clientHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 500, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(viewer.clientWidth, viewer.clientHeight);
+    renderer.setSize(window.innerWidth, 500);
     document.getElementById('viewer').appendChild(renderer.domElement);
 
-    const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-    scene.add(light);
-    camera.position.set(0, 1.5, 3);
-
-    const loader = new THREE.GLTFLoader();
-    loader.load('model/puppet.gltf', function (gltf) {
-      scene.add(gltf.scene);
-      animate();
-    });
-
-    function animate() {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-    }
-  </script>
-</body>
-</html>
+    const light = new THREE.HemisphereLight(0xffffff, 0x
