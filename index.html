@@ -8,6 +8,7 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
   <script src="https://unpkg.com/three@0.150.1/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://unpkg.com/three@0.150.1/examples/js/controls/OrbitControls.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -137,11 +138,40 @@
       audio.play();
     }
 
-    // Three.js 模型展示
+    // Three.js 模型展示含 OrbitControls
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 500, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, 500);
     document.getElementById('viewer').appendChild(renderer.domElement);
 
-    const light = new THREE.HemisphereLight(0xffffff, 0x
+    const light = new THREE.HemisphereLight(0xffffff, 0x444444);
+    scene.add(light);
+    camera.position.set(0, 1.5, 3);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+
+    const loader = new THREE.GLTFLoader();
+    loader.load('model/puppet.glb', function (gltf) {
+      scene.add(gltf.scene);
+      animate();
+    }, undefined, function (error) {
+      console.error('載入模型失敗:', error);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / 500;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, 500);
+    });
+  </script>
+</body>
+</html>
